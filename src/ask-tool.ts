@@ -22,7 +22,8 @@ import { runAskFlow } from "./ui/controller.ts";
 
 export function registerAskTool(
 	pi: ExtensionAPI,
-	remoteAsk?: RemoteAskRuntime
+	remoteAsk?: RemoteAskRuntime,
+	extraPromptGuidelines: readonly string[] = []
 ) {
 	pi.registerTool({
 		name: "ask_user",
@@ -30,7 +31,7 @@ export function registerAskTool(
 		description: ASK_TOOL_DESCRIPTION,
 		promptSnippet:
 			"Clarify ambiguous or preference-sensitive decisions with a short interactive interview before proceeding",
-		promptGuidelines: [...ASK_TOOL_PROMPT_GUIDELINES],
+		promptGuidelines: [...ASK_TOOL_PROMPT_GUIDELINES, ...extraPromptGuidelines],
 		parameters: AskParamsSchema,
 		prepareArguments: (args) => prepareAskParams(args) as AskParams,
 		execute: (toolCallId, params, signal, onUpdate, ctx) =>
